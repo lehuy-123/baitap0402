@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .product-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .sortable {
+            cursor: pointer;
+        }
+        .sortable:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Quản Lý Sản Phẩm</h2>
+
+        <div class="row mb-3 align-items-center">
+            <div class="col-md-4">
+                <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm theo Title...">
+            </div>
+            <div class="col-md-2">
+                <select id="pageSizeSelect" class="form-select">
+                    <option value="5">Hiển thị: 5</option>
+                    <option value="10">Hiển thị: 10</option>
+                    <option value="20">Hiển thị: 20</option>
+                </select>
+            </div>
+            <div class="col-md-6 text-end">
+                <button class="btn btn-primary" onclick="openCreateModal()"><i class="fa-solid fa-plus"></i> Tạo mới</button>
+                <button class="btn btn-success" onclick="exportToCSV()"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col" class="sortable" onclick="sortTable('title')">Title <i class="fa-solid fa-sort"></i></th>
+                        <th scope="col" class="sortable" onclick="sortTable('price')">Price <i class="fa-solid fa-sort"></i></th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="productTableBody">
+                    </tbody>
+            </table>
+        </div>
+
+        <nav>
+            <ul class="pagination justify-content-center" id="paginationControls">
+                </ul>
+        </nav>
+    </div>
+
+    <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Chi tiết sản phẩm</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="productForm">
+                        <div class="mb-3">
+                            <label class="form-label">ID</label>
+                            <input type="text" class="form-control" id="productId" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Title</label>
+                            <input type="text" class="form-control" id="productTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Price</label>
+                            <input type="number" class="form-control" id="productPrice" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" id="productDesc" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Category (ID)</label>
+                             <input type="number" class="form-control" id="productCategoryId" value="1">
+                            <small class="text-muted">Nhập ID danh mục (Ví dụ: 1, 2, 3)</small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Image URL</label>
+                            <input type="text" class="form-control" id="productImage">
+                            <img id="imagePreview" src="" class="mt-2 product-img" style="display:none;">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="btnSave" onclick="saveProduct()">Lưu thay đổi</button>
+                    <button type="button" class="btn btn-primary" id="btnCreate" onclick="createProductAPI()" style="display:none;">Tạo mới</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
